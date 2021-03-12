@@ -11,6 +11,11 @@ es agradable hacerlo.
 * Hola Mundo
     -  Configuración del compilador
     -  _Hola Mundo_
+* Variables
+    - Declarar variables
+    - Estándares de entradas/salidas (_input/output_)
+    - Expresiones
+    - Precisión de punto flotante (_floats_)
 
 ## Introducción
 El siguiente tutorial de inicio rápido ofrece una descripción general del lenguaje de programación Fortran, así de como su sintaxis para estructuras de programación típicas como: tipos (_types_), variables (_variables_), arreglos o vectores (_arrays_), flujo de control (_control flow_) y funciones (_functions_).
@@ -77,3 +82,76 @@ y obtendrá (~junto a su creciente fascinación, vamos siga-me el rollo~)
  Hola, Mundo!
 ```
 Felicitaciones, usted, ha escrito, compilado y ejecutado su primer programa en Fortran! En la siguiente parte de este (~apasionante~) tutorial le presentaremos variables (_variables_) para almacenar datos !
+
+## Variables 
+Las variables permiten guardar información que va a manipular o usar el programa. Fortran es un lenjuage de programación **fuertemente tìpado**, lo que quiere decir, que dada cualquier variable esta debe tener un **tipo** (_type_).
+
+Hay 5 **tipos integrados** (_built-in data types_) en Fortran (para el que el lenguaje de programación proporciona soporte integrado.)
+
+- `integer` (enteros) - para los datos que representan números enteros, tanto positivo como negativos negativo.
+- `real` (números reales) - para almacenar datos con precisión de punto flotante (_floating-point_). No para enteros.
+- `complex` (números complejos) - par compuesto por una parte real y otra imaginaria.
+ - `character` (carácter) - para los datos de texto.
+ - `logical` (lógico) - para representar los valores booleanos, falso o verdadero.
+
+Antes de podar usar una variable, debe ser declarada; esto le dice al compilador que tipo (_type_) de variable es, y si es el caso, otros atributos de la variable declarada.
+
+> **Nota para quien navega**: Fortran es un **lenguaje de programación de tipo estático** (_statically typed_), lo que significa, que el tipo (_type_) de cada variable es fijo (no varia) una vez el programa es compilado. Es decir, mientras se ejecuta un programa en Fortran, una variable que se declare de un tipo (_type_), no podrá cambiarse a otro tipo  (_type_) durante el programa se este ejecutándose.
+ 
+
+### Declaración de variables
+La sintaxis para declarar una variables es
+
+```Fortran
+<tipo_de_variable> :: <nombre_de_la_variable>
+```
+
+donde `<tipo_de_variable>` es una de las cinco variables de la lista anterior y  `<nombre_de_la_variable>` es el nombre con el cual a usted le gustaría llamar a su variable.
+
+Los nombres, para las variables, deben comenzar con una letra y pueden consistir en letras, números y guiones bajos `_` . En el siguiente ejemplo vamos a declarar una para cada tipo de variable integral.
+ 
+**Ejemplo (Declaración de variables)**
+```Fortran
+program variables
+    implicit none
+    
+    integer :: cantidad
+    real :: pi
+    complex :: frecuencia
+    character :: inicial
+    logical :: estaBien
+
+end program variables    
+```
+
+> **Nota para quien navega**: El código en Fortran no es capaz de distinguir entre mayúsculas y minúsculas, así que no va a tenerse que preocuparse de ello en el nombre de las variable. Aún así es una buena practica mantener la coherencia con los nombres que usted dé.
+ 
+Considere la sentencia al inicio del programa `implicit none` , del programa anterior. Esta sentencia _le dice_ al compilador que todas las variables van a ser declaradas explícitamente, sin este fragmento de código, las variables se declararan implícitamente de acuerdo con la primera letra de su nombre.
+
+|**Importante:** |
+|------------------------------------------------------------------------|
+|Utilice siempre la sentencia `implicit none` al inicio de programa (_program_) y proceso (_procedure_). El tipado de variables (asignar tipos a las variables)  implícito es considerado una mala (~horrible~) práctica en la programación moderna, ya que oculta información que puede conducir a errores en el programa. |
+
+Una vez hemos declarado una variable, podemos asignarle y reasignarle un valor determinado, usando el operador de asignación `=`.
+
+**Ejemplo (Asignado valores a variables)**
+```Fortran
+cantidad = 10
+pi = 5.141592
+frecuencia = (1.0.-0.5)
+inicial = 'M'
+estaBien = .false.
+```
+Los caracteres deben ser puestos entre comillas simples `'` o compuestas `"`.
+
+Los valores lógicos o booleanos pueden tomar el valor `.true.` ó bien `.false.` .
+
+|**Importante:** |
+|------------------------------------------------------------------------|
+|Tenga cuidado la declaración y asignación `integer :: cantidad = 1`. **NO** es una inicialización normal para la variable, ya que implica el uso del atributo `save` lo que quiere decir que la variable retiene el valor entre procesos de llamada. Es una buena practica inicializar las variables de forma separada a la declaración de las mismas.|
+
+### Estándares de entradas/salidas (_input/output_)
+
+
+
+
