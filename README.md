@@ -152,6 +152,36 @@ Los valores lógicos o booleanos pueden tomar el valor `.true.` ó bien `.false.
 
 ### Estándares de entradas/salidas (_input/output_)
 
+En nuestro ejemplo anterior (`holamundo.f90`), imprimimos texto en la terminal. A esto se lo conoce comúnmente como `standard output` o bien `stdout`(salida estándar).
+
+Podemos usar la sentencia `print` para imprimir valores de variables con la salida estándar (`stdout`):
+
+**Ejemplo (Salida estándar de variables)**
+```Fortran
+print *, 'El valor de cantidad (numero entero) es: ', cantidad
+print *, 'El valor de pi (numero real) es: ', pi
+print *, 'El valor de frecuencia (numero complejo) es: ', frecuencia
+print *, 'El valor de inicial es (carcter): ', inicial
+print *, 'El valor inicial de estaBien (logico) es: ', estaBien
+```
+
+De forma similar, podemos leer valores en la ventana de comandos (o _shell_, o _command windows_), usando la sentencia `read`:
+
+**Ejemplo (Entrada y salida estándar de variables)**
+```Fortran
+        program leer_valores
+                implicit none
+                integer :: edad
+
+                print *, 'Por favor introduzca su edad: '
+                read (*,*) edad
+
+                print *, 'Tu edad es: ', edad
+        end program leer_valores      
+```
+
+Esta fuente de entrada (_input source_) comúnmente se suele referenciar como `standard input` o bien `stdin` (Entrada estándar).
+
 
 
 
