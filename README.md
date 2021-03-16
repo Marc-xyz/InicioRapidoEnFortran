@@ -132,6 +132,7 @@ Considere la sentencia al inicio del programa `implicit none` , del programa ant
 |------------------------------------------------------------------------|
 |Utilice siempre la sentencia `implicit none` al inicio de programa (_program_) y proceso (_procedure_). El tipado de variables (asignar tipos a las variables)  implícito es considerado una mala (~horrible~) práctica en la programación moderna, ya que oculta información que puede conducir a errores en el programa. |
 
+
 Una vez hemos declarado una variable, podemos asignarle y reasignarle un valor determinado, usando el operador de asignación `=`.
 
 **Ejemplo (Asignado valores a variables)**
@@ -155,6 +156,7 @@ Los valores lógicos o booleanos pueden tomar el valor `.true.` ó bien `.false.
 En nuestro ejemplo anterior (`holamundo.f90`), imprimimos texto en la terminal. A esto se lo conoce comúnmente como `standard output` o bien `stdout`(salida estándar).
 
 Podemos usar la sentencia `print` para imprimir valores de variables con la salida estándar (`stdout`):
+
 
 **Ejemplo (Salida estándar de variables)**
 ```Fortran
@@ -181,7 +183,47 @@ De forma similar, podemos leer valores en la ventana de comandos (o _shell_, o _
 ```
 
 Esta fuente de entrada (_input source_) comúnmente se suele referenciar como `standard input` o bien `stdin` (Entrada estándar).
+### Expresiones
 
+En la siguiente tabla se muestra, por orden de precedencia, el conjunto de operadores aritméticos habituales disponibles en Fortran:
 
+|Operador |   Descripción    |
+|---------|------------------|
+|   `**`  | Potencia         |
+|   `*`   | Multiplicación   |
+|   `/`   | División         |
+|   `+`   | Suma             |
+|   `-`   | Resta            |
 
+Veamos un ejemplo de su uso.
 
+**Ejemplo (Operadores aritméticos con un cilindro)**
+```Fortran
+      program aritmetica
+        implicit none
+
+        real :: pi
+        real :: radio_cilindro
+        real :: altura_cilindro
+        real :: area_cilindro
+        real :: volumen_cilindro
+
+        pi=3.1415926535
+        !  3.14159265358979323846264338
+
+        print *, 'Introduzca el radio de la base del cilindro:'
+        read(*,*) radio_cilindro
+
+        print *, 'Introduzca la altura del cilindro:'
+        read(*,*) altura_cilindro
+
+        area_cilindro = pi*radio_cilindro**2.0
+        volumen_cilindro = area_cilindro*altura_cilindro
+
+        print *, 'Radio del cilindro: ', radio_cilindro
+        print *, 'Altura del cilindro: ',altura_cilindro
+        print *, 'Area del cilindro: ',area_cilindro
+        print *, 'Volumen del cilindro: ',volumen_cilindro
+      end program aritmetica
+
+```
