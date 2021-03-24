@@ -227,3 +227,53 @@ Veamos un ejemplo de su uso.
       end program aritmetica
 
 ```
+
+### Precisión de punto flotante (_floats_)
+
+La precisión de punto flotante (_floating-point precision_) deseada se puede declara de forma explicita usando el parámetro `kind`. El módulo intrínseco (_intrinsic module_) `iso_fortran_env` proporciona parámetros de tipo (_kind_) para los tipos comunes de 32 bits y 64 bits.
+
+De nuevo, veamos un ejemplo de ello.
+
+**Ejemplo (De tipo (_kind_) explicíto  con `iso_fortran_env`)**
+```Fortran
+      program flotante
+        use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
+        implicit none
+        real(sp) :: flotante32
+        real(dp) :: flotante64
+
+        flotante32 = 1.0_sp
+        !Sufijo explicito para constantes literales
+        flotante64 = 1.0_dp
+
+        print *,'flotante32 = ',flotante32
+        print *,'flotante64 = ',flotante64
+        !flotante32 =    1.00000000    
+        !flotante64 =    1.0000000000000000 
+      end program flotante
+
+```
+
+|**Importante:** |
+|------------------------------------------------------------------------|
+|Siempre use un  sufijo `kind` (de tipo) para las constantes literales en punto flotante.|
+
+Podemos usar otro modulo,
+
+**Ejemplo (De tipo _kind_ con `iso_c_binding`)**
+```Fortran
+      program flotante2
+            use, intrinsic :: iso_c_binding, only: sp=>c_float, dp=>c_double
+            implicit none
+            real(sp) :: flotante32
+            real(dp) :: flotante64
+            
+            flotante32 = 1.0_sp
+            flotante64 = 1.0_dp
+            print *,'flotante32 = ',flotante32
+            print *,'flotante64 = ',flotante64
+            !flotante32 =    1.00000000    
+            !flotante64 =    1.0000000000000000 
+      end program flotante2
+```
+En la siguiente subsección, vamos a aprender como usar matrices para almacenar más de un valor en una variable.
