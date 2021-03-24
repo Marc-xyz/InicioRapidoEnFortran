@@ -16,9 +16,11 @@ es agradable hacerlo.
     - Estándares de entradas/salidas (_input/output_)
     - Expresiones
     - Precisión de punto flotante (_floats_)
+* Formaciones (_arrays_) y cadenas de caracteres (_strings_) 
+    - Declaración de formaciones (_arrays_)
 
 ## Introducción
-El siguiente tutorial de inicio rápido ofrece una descripción general del lenguaje de programación Fortran, así de como su sintaxis para estructuras de programación típicas como: tipos (_types_), variables (_variables_), arreglos o vectores (_arrays_), flujo de control (_control flow_) y funciones (_functions_).
+El siguiente tutorial de inicio rápido ofrece una descripción general del lenguaje de programación Fortran, así de como su sintaxis para estructuras de programación típicas como: tipos (_types_), variables (_variables_), arreglos (~este termino es poco adecuado~) o vectores (_arrays_), flujo de control (_control flow_) y funciones (_functions_).
 
 El contenido de este tutorial se muestra en la barra de navegación, que en un principio, quedara a su izquierda, la sección en la que se halle quedará resaltada en negrita (**Esto esta en negrita**)
 
@@ -227,7 +229,6 @@ Veamos un ejemplo de su uso.
       end program aritmetica
 
 ```
-
 ### Precisión de punto flotante (_floats_)
 
 La precisión de punto flotante (_floating-point precision_) deseada se puede declara de forma explicita usando el parámetro `kind`. El módulo intrínseco (_intrinsic module_) `iso_fortran_env` proporciona parámetros de tipo (_kind_) para los tipos comunes de 32 bits y 64 bits.
@@ -276,4 +277,39 @@ Podemos usar otro modulo,
             !flotante64 =    1.0000000000000000 
       end program flotante2
 ```
-En la siguiente subsección, vamos a aprender como usar matrices para almacenar más de un valor en una variable.
+En la siguiente subsección, vamos a aprender como usar vectores para almacenar más de un valor en una variable.
+
+## Formaciones (_arrays_) y cadenas de caracteres (_strings_) 
+
+Sucede más a menudo que lo contrario, que necesitamos almacenar y operar con largas listas de números, en lugar de unas únicas pocas variables escalares o caracteres (como las que hemos visto hasta ahora). En programación informática estas listas son llamadas _arrays_, que siguiendo el trabajo de _Antonio Ramón Vaquero Sánchez( 30 de  Agosto 1938)_ no traduciremos (~nunca más como arreglos~) sino como vectores  o formaciones (de escalares, por ejemplo).
+
+Entendemos como formaciones (_arrays_), variables _multidimensionales_, es decir, que contienen más de un valor, donde cada uno de estos resulta accesible mediante un o unos indices numerables.
+
+|**Importante:** |
+|------------------------------------------------------------------------|
+| Las formaciones o vectores  (_arrays_) están indexadas comenzando por `1`, esto quiere decir,  que para acceder al primer elemento de cualquiera de sus dimensiones, vamos a usar el indice igualado a `1`.|
+
+## Declaración de formaciones (_arrays_)
+
+Podemos declarar formaciones (_formaciones_) de cualquier tipo. Hay dos notaciones comunes para declarar formaciones de variables; usando la palabra clave `dimension` o agregando las dimensiones de la formación entre paréntesis después del nombre de la variable de formación separadas por `:`.
+
+Veamos un ejemplo,
+
+**Ejemplo (Declaración estática de una formación)**
+```Fortran
+      !Declaración estática de una formación
+      program formaciones
+         !Formación de enteros 1-Dimensional (1D)
+         integer, dimension(10) :: formacion1
+
+         !Declaración equivalente 
+         integer :: formacion2(10)
+
+         !Formación de reales 2-Dimensional (2D)
+         real, dimension(10,10) :: formacion3
+
+         !Personalizando límites superior y inferior de los indices de una formación
+         real :: formacion4(0:9)
+         real :: formacion5(-5:5)
+     end program formaciones
+``` 
