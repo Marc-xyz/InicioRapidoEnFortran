@@ -365,8 +365,7 @@ Veamos un ejemplo más,
 
         print *,'vector1 en  orden invertido:'// achar(10),vector1(10:1:-1)
         !Imprimir la formación de diez elementos en orden decreciente por indice
-      end program rebanamiento_formaciones
-~                                                  
+      end program rebanamiento_formaciones                                                
 ```
 
 > **Nota para quien navega**: Fortran guarda las formaciones de dos dimensiones por orden de columna; solo hace falta recordar que  el primer indice varia más rápidamente.
@@ -406,7 +405,6 @@ program asignable
 Vamos a verlo directamente con un par de ejemplos:
 
 **Ejemplo (Cadena de caracteres estática)**
-
 ```Fortran
       program cadena_de_caracteres
         implicit none
@@ -426,9 +424,9 @@ Vamos a verlo directamente con un par de ejemplos:
       end program cadena_de_caracteres
 ```
 
-Ahora con cadenas de caracteres de tamaño asignable
-**Ejemplo (Cadena de caracteres dinámica )**
+Ahora con cadenas de caracteres de tamaño asignable;
 
+**Ejemplo (Cadena de caracteres dinámica )**
 ```Fortran
       program cadena_de_caracteres_asignable
         implicit none
@@ -448,4 +446,3 @@ Ahora con cadenas de caracteres de tamaño asignable
         print *, nombre//' '//apellido
       end program cadena_de_caracteres_asignable 
 ```
-
