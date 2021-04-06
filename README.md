@@ -19,6 +19,8 @@ es agradable hacerlo.
 * Formaciones ( _arrays_) y cadenas de caracteres (_strings_) 
     - Declaración de formaciones (_arrays_)
 	- Rebanadas de formaciones (_Array slicing_)
+	- Asignación dinámica de formaciones (_dynamic arrays_) 
+	- Cadenas de caracteres (_character strings_)
 ## Introducción
 El siguiente tutorial de inicio rápido ofrece una descripción general del lenguaje de programación Fortran, así de como su sintaxis para estructuras de programación típicas como: tipos (_types_), variables (_variables_), arreglos (~este termino es poco adecuado~) o vectores (_arrays_), flujo de control (_control flow_) y funciones (_functions_).
 
@@ -367,4 +369,83 @@ Veamos un ejemplo más,
 ~                                                  
 ```
 
-> **Nota para quien navega**: Fortran guarda las formaciones de dos dimensiones por ordren de columna; solo hace falta recordar que  el primer indice varia más rápidamente. 
+> **Nota para quien navega**: Fortran guarda las formaciones de dos dimensiones por orden de columna; solo hace falta recordar que  el primer indice varia más rápidamente.
+
+### Asignación dinámica de formaciones (_dynamic arrays_)
+
+Hasta ahora hemos especificado el tamaño de nuestras formaciones en el código de nuestro programa; este tipo de formación (que podría ser un vector, matriz, ~tensor?~) _estática_, ya que su tamaño es fijo cuando compilamos nuestro programa. 
+
+Muy a menudo, no sabemos como de grande vamos a necesitar que sea una formación (pensamos en la práctica en una matriz) hasta que ejecutamos nuestro programa. Por ejemplo, si estamos leyendo  datos de un fichero de tamaño desconocido.
+
+Para esta problemática, vamos a necesitar formaciones asignables `allocatable`, estás se _asignan_ mientras se ejecuta el programa que es cuando realmente podemos saber como de grande, en tamaño, necesitamos que sea la formación.
+
+**Ejemplo (Asignación de formaciones diámicas)**
+
+```Fortran
+program asignable
+        implicit none
+        
+        integer, allocatable :: vector(:)
+        integer, allocatable :: matriz(:,:)
+        
+        allocate(vector(10))
+        allocate(matriz(10,10))
+        
+        !Se asignan por defecto todos los 
+        !elementos con ceros
+
+        print *,'Vector: ', vector
+        print *,'Matriz: ', matriz
+      end program asignable
+```
+
+> **Nota para quien navega**: Las formaciones asignables locales se _desasignan_ automáticamente cuando quedan fuera de alcance (_when they go out of scope_). 
+
+### Cadenas de caracteres (_character strings_)
+
+Vamos a verlo directamente con un par de ejemplos:
+
+**Ejemplo (Cadena de caracteres estática)**
+
+```Fortran
+      program cadena_de_caracteres
+        implicit none
+        
+        character(len=8) :: nombre
+        character(len=9) :: apellido
+        character(len=18) :: nombre_completo
+       
+        nombre = 'Diogenes'
+        apellido= 'De Sinope'
+
+        !Concatenación de cadenas de caracteres 
+        nombre_completo= nombre//' '//apellido
+
+        print *, '¿ Y su nombre ?'
+        print *, nombre_completo
+      end program cadena_de_caracteres
+```
+
+Ahora con cadenas de caracteres de tamaño asignable
+**Ejemplo (Cadena de caracteres dinámica )**
+
+```Fortran
+      program cadena_de_caracteres_asignable
+        implicit none
+        
+        character(:), allocatable :: nombre
+        character(:), allocatable :: apellido
+
+               
+        allocate(character(8) :: nombre)
+        nombre='Diogenes'
+        !Declaración de asignación explícita
+ 
+
+        apellido='De Sinope'
+        !Asignación en la asignación
+
+        print *, nombre//' '//apellido
+      end program cadena_de_caracteres_asignable 
+```
+
