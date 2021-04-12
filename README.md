@@ -21,6 +21,14 @@ es agradable hacerlo.
 	- Rebanadas de formaciones (_Array slicing_)
 	- Asignación dinámica de formaciones (_dynamic arrays_) 
 	- Cadenas de caracteres (_character strings_)
+* Operadores y estructuras de control (_control flow_)
+	- Operadores lógicos
+	- Construcciones condicionales (`if`)
+	- Construcciones repetitivas o bucles (`do`)
+	- Bucles condicionales (`do while`)
+	- Sentencias de control de bucle (`exit` y `cycle`)
+	- Control de bucles anidados (_tags_ o etiquetas)
+	- Bucles en paralelo (`do concurrent`)
 ## Introducción
 El siguiente tutorial de inicio rápido ofrece una descripción general del lenguaje de programación Fortran, así de como su sintaxis para estructuras de programación típicas como: tipos (_types_), variables (_variables_), arreglos (~este termino es poco adecuado~) o vectores (_arrays_), flujo de control (_control flow_) y funciones (_functions_).
 
@@ -322,7 +330,6 @@ Una poderosa caracteristica del lenguaje de programación Fortran es su soporte 
 Veamos un ejemplo más,
  
 **Ejemplo (Rebanamiento de formaciones)**
-
 ```Fortran
       program rebanamiento_formaciones
         implicit none
@@ -365,7 +372,7 @@ Veamos un ejemplo más,
 
         print *,'vector1 en  orden invertido:'// achar(10),vector1(10:1:-1)
         !Imprimir la formación de diez elementos en orden decreciente por indice
-      end program rebanamiento_formaciones                                                
+      end program rebanamiento_formaciones                                                  
 ```
 
 > **Nota para quien navega**: Fortran guarda las formaciones de dos dimensiones por orden de columna; solo hace falta recordar que  el primer indice varia más rápidamente.
@@ -379,9 +386,8 @@ Muy a menudo, no sabemos como de grande vamos a necesitar que sea una formación
 Para esta problemática, vamos a necesitar formaciones asignables `allocatable`, estás se _asignan_ mientras se ejecuta el programa que es cuando realmente podemos saber como de grande, en tamaño, necesitamos que sea la formación.
 
 **Ejemplo (Asignación de formaciones diámicas)**
-
 ```Fortran
-program asignable
+      program asignable
         implicit none
         
         integer, allocatable :: vector(:)
@@ -445,4 +451,259 @@ Ahora con cadenas de caracteres de tamaño asignable;
 
         print *, nombre//' '//apellido
       end program cadena_de_caracteres_asignable 
+```
+## Operadores y estructuras de control (_control flow_)
+
+Una de las ventajas más poderosas de los algoritmos computables, en comparación con simplemente fórmulas matemática, se puede apreciar en la estructura ramificada que presenta estos primeros. Los programas que implementan los algoritmos pueden decidir, mediante estas ramificaciones, que instrucciones ejecutar seguidamente basándose en condiciones lógicas (Por ejemplo, si se cumple `a>5` , entonces has cinco veces _tal cosa_ ).
+
+Hay dos maneras principales de controlar el flujo de instrucciones de un programa (_program flow_) en Fortran.
+
+* Condicionales (_Si se da A, entonces haz B_,`if`): Elegir la ruta que toma en programa (_program path_) en función de un valor booleano (es decir uno que solo puede ser _verdadero ó falso_).
+
+* Bucle (_loop_): repite una porción de código múltiples veces.
+
+### Operadores lógicos
+
+Antes de usar un operador de bifurcación lógica o condicional, necesitamos ser capaces de formar una expresión lógica que comprobar si se cumple o no.
+
+Para formar una expresión lógica están disponibles el siguiente conjunto de operadores relacionales (_relational operators_)
+
+| Operador | Alternativa | Descripción 						      |
+|----------|-------------|----------------------------------------|
+|  `==`    |   `.eq.`    | Prueba la igualdad de dos valores.     |
+|  `/=`    |   `.ne.`    | Prueba la desigualdad de dos valores.  |
+|  `>`     |   `.gt.`    | Prueba si el elemento a la izquierda del operador es más grande que el de la derecha del operador.|
+|  `<`     |   `.lt.`    | Prueba si el elemento a la izquierda del operador es más pequeño que el de la derecha del operador.|
+|  `>=`     |   `.ge.`    | Prueba si el elemento a la izquierda del operador es más grande o igual que el de la derecha del operador.|
+|  `<=`     |   `.le.`    | Prueba si el elemento a la izquierda del operador es más pequeño o igual  que el de la derecha del operador.|
+
+así como de el siguiente conjunto de operadores lógicos (_logical operators_):
+
+| Operador | Descripción                 |
+|----------|-----------------------------|
+| `.and.`  | Verdadero  (`TRUE`) si los operandos de izquierda y derecha son verdaderos (`TRUE`).|
+| `.or.`   | Verdadero  (`TRUE`) si o bien el operando derecho o izquierdo son o ambos son verdaderos. |
+| `.not.`  | Verdadero (`TRUE`) si el operando derecho es Falso `FALSE`.|
+| `.eqv.`  | Verdadero (`TRUE`) si el operando izquierdo tiene el mismo valor lógico que el operando derecho.|
+| `.neqv`  | Verdadero (`TRUE`) si el operando izquierdo tiene el valor lógico opuesto al operando derecho.|
+
+### Construcciones condicionales (`if`)
+
+En los siguientes ejemplos, se utiliza un constructor condicional `if` para imprimir un mensaje que describe la naturaleza de la variable `angulo`.
+
+**Ejemplo (Ramificación única `if`)**
+```Fortran
+      program angulo_agudo
+        implicit none
+        real :: angulo
+        angulo = 45.0
+        if (angle < 90.0) then
+          print *, 'El angulo es agudo'
+        end if 
+      end program
+ ```
+En este primer ejemplo el código contenido dentro de la estructura condicional `if` **sólo se ejecutara si** se comprueba que la variable real `angulo` tiene un valor estrictamente menor a `90.0`, es decir si la condición es Verdadera (`TRUE`).
+
+|**Importante:** |
+|------------------------------------------------------------------------|
+| Es una buena practica _sangrar_ con un espacios o tabulación el código dentro de los constructores condicionales `if` y `do` para hacer más legible el código. |
+
+Podemos agregar una rama alternativa a la estructura condicional creada añadiendo la palabra clave (_keyword_) `else`:
+
+**Ejemplo (Dos ramificaciónes `if-else`)**
+```Fortran
+      program angulo_agudo_no_agudo
+        implicit none
+        real :: angulo
+        angulo = 90.0
+        if (angulo < 90.0) then
+          print *, 'El angulo es agudo'
+        else 
+          print *, 'El angulo es obtuso o recto'
+        end if 
+      end program angulo_agudo_no_agudo
+```
+
+En el ejemplo anterior hay dos ramificaciones en la estructura condicional `if`, pero **solo una de las ramificaciones es ejecutada**, dependiendo claro esta, de la expresión lógica siguiente a la palabra clave `if` (mirar código del ejemplo anterior).
+
+Aunque eso no es todo, ya que podemos agregar el número de ramificaciones que queramos usando la palabra clave `else-if` y añadir las nuevas condiciones que verificar. Veamos un ejemplo:
+
+**Ejemplo (Múltiples ramificaciones con `if-elseif-else`)**
+```Fortran
+     program angulo_clasificar
+        implicit none
+        real :: angulo
+        angulo = 190.0
+        if (angulo < 90.0) then
+          print *, 'El ángulo es agudo'
+        else if (angulo < 180.0) then 
+          print *, 'El ángulo es obtuso o recto'
+        else 
+          print *, 'El ángulo es cóncavo reflejo o entrante'
+        end if 
+        ! Podemos poner tilde 
+        ! No podemos llamar una variable igual que el programa
+      end program angulo_clasificar
+```
+
+### Construcciones repetitivas o bucles (`do`)
+
+En el siguiente ejemplo, vamos a usar la sentencia `do` para construir un bucle con el cual imprimir todos los elementos de una secuencia. El bucle creado con `do` tiene una variable entera que llamamos _contador_, esta es usada para contar en qué iteración `i`-ésima está el bucle actualmente (por ejemplo, si esta es la quita o sexta vez que se ejecuta la instrucción, eso es lo que cuenta la variable _contador_); en ejemplo vamos a usar un nombre común para la **variable contador**: `i` (_counter variable_).
+
+Cuando definimos el inicio de un bucle `do` usamos el nombre de nuestra variable contador seguida de un signo de igualdad (`=`), para especificar el valor inicial y final para nuestra variable contador, veamos esto con el ejemplo:
+
+**Ejemplo (Bucle con `do`)**
+```Fortran
+      program imprimir_secuencia
+        integer :: i
+        do i=1,10
+            print *,i
+        end do
+      end program imprimir_secuencia
+```
+
+Y obtenemos: 
+```terminal
+          1       
+          2
+          3
+          4
+          5
+          6
+          7
+          8
+          9
+         10
+```
+
+**Ejemplo (Bucle con `do` no de uno en uno)**
+```Fortran
+      program imprimir_secuencia_pares
+        integer :: i
+        do i=2,10,2
+            print *,i !Imprimimos números pares
+       end do
+      end program imprimir_secuencia_pares
+```
+
+Y obtenemos: 
+```terminal      
+          2
+          4
+          6
+          8
+         10
+```
+
+### Bucles condicionales (`do while`)
+
+Es posible agregar un condicional a un bucle con la sentencia o palabra clave `while`. Si usamos `while` el bucle se ejecutará mientras la condición dada dentro de `while()` sea cierta, es decir, tenga valor `.true.`.
+
+Veamos todo esto de forma explícita en un ejemplo:
+
+**Ejemplo (Bucle con condicional `do while(i<11)`)**
+```Fortran
+      program bucle_condicional
+        implicit none
+        integer :: i
+        i=1 
+        do while (i<11)
+           print *, i
+           i=i+1
+        end do
+        print *,i ! Aquí _i_ vale 11
+      end program bucle_condicional
+```
+### Sentencias de control de bucle (`exit` y `cycle`)
+
+La mayoría de veces, los bucles se deberían detener  si se cumple alguna condición. Fortran proporciona dos tipos de sentencias ejecutables para tal propósito.
+
+Usamos `exit` para salir de un bucle _antes de tiempo_, por lo general, este se encuentra anidado dentro de un condicional construido con la palabra clave `if`.
+
+**Ejemplo (Bucle con salida prematura, `exit`)**
+```Fortran
+      program salida_de_un_bucle
+        implicit none
+        integer :: i
+        do i=1, 100 
+          if (i>20) then
+            exit !Para de imprimir números por favor 
+          end if 
+          print *,i 
+        end do
+        print *,i ! Aquí _i_ vale 21
+      end program salida_de_un_bucle
+```
+Pero esto no es todo, si únicamente queremos saltar alguna de las iteraciones del bucle pero no finalizar este podemos usar la palabra clave `cycle`, para omitir algunas iteraciones si se cumple una condición. Veamos, también, un ejemplo de esto:
+
+**Ejemplo (Bucle con salida de iteraciones, `cycle`)**
+```Fortran
+      program salida_de_unas_iteraciones
+        implicit none
+        integer :: i
+        do i=1,10 
+          if (mod(i,2)==1) then
+            cycle ! No imprimas los números impares
+          end if 
+          print *,i 
+        end do
+        print *,i ! Aquí _i_ vale 11
+      end program salida_de_unas_iteraciones
+``` 
+
+> **Nota para quien navega**: Cuando usamos bucles anidados, la palabras claves `cycle` y `exit` o sentencias actuan **sobre el bucle más interno**.
+
+### Control de bucles anidados (_tags_ o etiquetas)
+
+Una duda recurrente en cualquier lenguaje de programación es hasta donde podemos usar bucles anidados ¿Dónde paramos? Cuando hablamos de **bucles anidados** nos referimos a bucles que existen dentro de bucles. Fortran permite a quien programa usar **etiquetas** o  **nombrar** (_tags_ o _names_) cada bucle. Si los bucles están etiquetados, se derivan de ello dos beneficios potenciales destacables:
+
+1. La **legibilidad** del código aumenta (cuando la notación o nomenclatura es pedagógica, ~pensamos en nombres descriptivos, por ejemplo: `bucle_exterior`~ ).
+2. `exit` y `cycle` pueden ser usadas con etiquetas (_tag_), lo cual conlleva una refinación o un control muy detallado de los bucles (_loop_).
+
+Veamos un ejemplo de bucle con etiquetas;
+
+**Ejemplo (Bucles anidados con etiquetas o _tag_ s)**
+```Fortran
+      program bucles_anidados_con_etiquetas
+        implicit none !Resistan la tentación. Ya son enteros 
+        integer :: i,j 
+        
+        bucle_exterior: do i=1,10 
+          bucle_interior: do j=1,10
+            
+            if ((j+i)<10) then 
+            !Imprimir solo elementos (i,j), tales que i+j>10.
+                   cycle bucle_exterior
+               !Ves a la siguiente iteración del bucle_exterior 
+            end if 
+
+            print *, 'I=', i, 'J=', j, 'SUM=', j+i
+          end do bucle_interior
+        end do bucle_exterior
+      end program bucles_anidados_con_etiquetas
+```
+
+### Bucles en paralelo (`do concurrent`)
+
+Los bucles `do concurrent` tienen una gran utilidad para especificar explícitamente que el interior del bucle no tiene interdependencias; esto resulta útil ya que informa al compilador de la posibilidad de usar paralelización/ _SIMD_ para ejecutar más rápido el bucle, así como dejar constancia de ello por parte de quien programa el código. Más especifícamente, esto significa que cualquier iteración del bucle no depende de la ejecucción previa decualquiera de las otras iteraciones del bucle `do concurrent`. También es necesario que cualquier cambio de estado (_state changes_)  que pudiera ocurrir, únicamente deba suceder dentro de la propia iteración dada sin afectar a las demás. Estos requisitos, ya de por si imponen el tipo de instrucciones que pueden ser colocadas dentro del cuerpo de un bucle `do concurrent`.
+
+|**Importante:** |
+|------------------------------------------------------------------------|
+| La instrucción `do concurrent` no es una instrucción básica de Fortran. Además la explicación dada anteriormente no da todos los requisitos que deben ser satisfechas para escribir un bucle `do concurrent` correcto. Los compiladores también son libres de codificar las instrucciones a código maquina como les parezca, cosa que puede llevar a una posible no optimización del bucle`do concurrent`.|
+
+En fin demos un ejemplo pues;
+
+**Ejemplo (Bucle `do concurrent()`)**
+```Fortran
+      program bucle_simultaneo
+        implicit none 
+        real, parameter :: pi =3.14159265
+        integer, parameter :: n=10
+        real :: resultado_sin(n)
+        integer :: i
+        do  concurrent (i=1:n) !Cuidado la sintaxis es ligeramente diferente
+          resultado_sin(i)=sin(i*pi/4.)
+        end do
+        print *, resultado_sin
+      end program bucle_simultaneo
 ```
