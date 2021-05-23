@@ -16,7 +16,7 @@ es agradable hacerlo.
     - Estándares de entradas/salidas (_input/output_)
     - Expresiones
     - Precisión de punto flotante (_floats_)
-* Formaciones ( _arrays_) y cadenas de caracteres (_strings_) 
+* Formaciones (_arrays_) y cadenas de caracteres (_strings_) 
     - Declaración de formaciones (_arrays_)
 	- Rebanadas de formaciones (_Array slicing_)
 	- Asignación dinámica de formaciones (_dynamic arrays_) 
@@ -32,7 +32,7 @@ es agradable hacerlo.
 ## Introducción
 El siguiente tutorial de inicio rápido ofrece una descripción general del lenguaje de programación Fortran, así de como su sintaxis para estructuras de programación típicas como: tipos (_types_), variables (_variables_), arreglos (~este termino es poco adecuado~) o vectores (_arrays_), flujo de control (_control flow_) y funciones (_functions_).
 
-El contenido de este tutorial se muestra en la barra de navegación, que en un principio, quedara a su izquierda, la sección en la que se halle quedará resaltada en negrita (**Esto esta en negrita**)
+El contenido de este tutorial se muestra en la barra de navegación, que en un principio, quedara a su izquierda, la sección en la que se halle quedará resaltada en negrita (**Esto esta en negrita**).
 
 Use el botón _Siguiente_, en la parte inferior (imagíneselo), para comenzar el tutorial con el típico ejemplo  _Hola Mundo_ esta vez en Fortran !
 
@@ -96,7 +96,7 @@ y obtendrá (~junto a su creciente fascinación, vamos siga-me el rollo~)
 Felicitaciones, usted, ha escrito, compilado y ejecutado su primer programa en Fortran! En la siguiente parte de este (~apasionante~) tutorial le presentaremos variables (_variables_) para almacenar datos !
 
 ## Variables 
-Las variables permiten guardar información que va a manipular o usar el programa. Fortran es un lenjuage de programación **fuertemente tìpado**, lo que quiere decir, que dada cualquier variable esta debe tener un **tipo** (_type_).
+Las variables permiten guardar información que va a manipular o usar el programa. Fortran es un lenjuage de programación **fuertemente tipado**, lo que quiere decir, que dada cualquier variable esta debe tener un **tipo** (_type_).
 
 Hay 5 **tipos integrados** (_built-in data types_) en Fortran (para el que el lenguaje de programación proporciona soporte integrado.)
 
@@ -245,7 +245,7 @@ La precisión de punto flotante (_floating-point precision_) deseada se puede de
 
 De nuevo, veamos un ejemplo de ello.
 
-**Ejemplo (De tipo (_kind_) explicíto  con `iso_fortran_env`)**
+**Ejemplo (De tipo _kind_ explicíto  con `iso_fortran_env`)**
 ```Fortran
       program flotante
         use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
@@ -289,7 +289,7 @@ Podemos usar otro modulo,
 ```
 En la siguiente subsección, vamos a aprender como usar vectores para almacenar más de un valor en una variable.
 
-## Formaciones ( _arrays_) y cadenas de caracteres (_strings_) 
+## Formaciones (_arrays_) y cadenas de caracteres (_strings_) 
 
 Sucede más a menudo que lo contrario, que necesitamos almacenar y operar con largas listas de números, en lugar de unas únicas pocas variables escalares o caracteres (como las que hemos visto hasta ahora). En programación informática estas listas son llamadas _arrays_, que siguiendo el trabajo de _Antonio Ramón Vaquero Sánchez( 30 de  Agosto 1938)_ no traduciremos (~nunca más como arreglos~) sino como vectores  o formaciones (de escalares, por ejemplo).
 
