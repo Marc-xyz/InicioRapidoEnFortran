@@ -7,53 +7,53 @@ sin más,
 es agradable hacerlo.
 ```
 ## Tutorial de inicio rápido en Fortran (índice)
-* Introducción
-* Hola Mundo
-    -  Configuración del compilador
-    -  _Hola Mundo_
-* Variables
-    - Declarar variables
-    - Estándares de entradas/salidas (_input/output_)
-    - Expresiones
-    - Precisión de punto flotante (_floats_)
-* Formaciones (_arrays_) y cadenas de caracteres (_strings_) 
-    - Declaración de formaciones (_arrays_)
-	- Rebanadas de formaciones (_Array slicing_)
-	- Asignación dinámica de formaciones (_dynamic arrays_) 
-	- Cadenas de caracteres (_character strings_)
-* Operadores y estructuras de control (_control flow_)
-	- Operadores lógicos
-	- Construcciones condicionales (`if`)
-	- Construcciones repetitivas o bucles (`do`)
-	- Bucles condicionales (`do while`)
-	- Sentencias de control de bucle (`exit` y `cycle`)
-	- Control de bucles anidados (_tags_ o etiquetas)
-	- Bucles en paralelo (`do concurrent`)
-* Organizar la estructura del código
-	- Subrutinas
-	- Funciones
-	- Módulos
-* Tipos derivados (_Derived types_)
-	- Una ojeada a los tipos de datos derivados
-	- Tipos de datos derivados, en detalle 
-	- Opciones para declarar un tipo derivado
-	- Opciones para declarar miembros de un tipo derivado (_members of a derived type_)
-	- Procedimientos ligados al tipado de datos (_Type-bound procedures_)
-## Introducción
+* ⚪ Introducción
+* 🟡 Hola Mundo
+	- 🟨  Configuración del compilador
+	- 🟨  _Hola Mundo_
+* 🟠 Variables
+	- 🟧 Declarar variables
+	- 🟧 Estándares de entradas/salidas (_input/output_)
+	- 🟧 Expresiones
+	- 🟧 Precisión de punto flotante (_floats_)
+* 🔴 Formaciones (_arrays_) y cadenas de caracteres (_strings_) 
+	- 🟥 Declaración de formaciones (_arrays_)
+	- 🟥 Rebanadas de formaciones (_Array slicing_)
+	- 🟥 Asignación dinámica de formaciones (_dynamic arrays_) 
+	- 🟥 Cadenas de caracteres (_character strings_)
+* 🟢 Operadores y estructuras de control (_control flow_)
+	- 🟩 Operadores lógicos
+	- 🟩 Construcciones condicionales (`if`)
+	- 🟩 Construcciones repetitivas o bucles (`do`)
+	- 🟩 Bucles condicionales (`do while`)
+	- 🟩 Sentencias de control de bucle (`exit` y `cycle`)
+	- 🟩 Control de bucles anidados (_tags_ o etiquetas)
+	- 🟩 Bucles en paralelo (`do concurrent`)
+* 🔵 Organizar la estructura del código
+	- 🟦 Subrutinas
+	- 🟦 Funciones
+	- 🟦 Módulos
+* ⚫ Tipos derivados (_Derived types_)
+	- ⬛ Una ojeada a los tipos de datos derivados
+	- ⬛ Tipos de datos derivados, en detalle 
+	- ⬛ Opciones para declarar un tipo derivado
+	- ⬛ Opciones para declarar miembros de un tipo derivado (_members of a derived type_)
+	- ⬛ Procedimientos ligados al tipado de datos (_Type-bound procedures_)
+## ⚪ Introducción
 El siguiente tutorial de inicio rápido ofrece una descripción general del lenguaje de programación Fortran, así de como su sintaxis para estructuras de programación típicas como: tipos (_types_), variables (_variables_), arreglos (~este termino es poco adecuado~) o vectores (_arrays_), flujo de control (_control flow_) y funciones (_functions_).
 
 El contenido de este tutorial se muestra en la barra de navegación, que en un principio, quedara a su izquierda, la sección en la que se halle quedará resaltada en negrita (**Esto esta en negrita**).
 
 Use el botón _Siguiente_, en la parte inferior (imagíneselo), para comenzar el tutorial con el típico ejemplo  _Hola Mundo_ esta vez en Fortran !
 
-## Hola Mundo
+## 🟡 Hola Mundo
 En esta parte del tutorial, vamos a escribir nuestro primer programa en Fortran: el omnipresente ejemplo de _Hola Mundo_.
 
 Sin embargo antes de poder escribir (~para luego compilar y después ejecutar~) nuestro programa, debemos asegurarnos de tener configurado un compilador de Fortran.
 
 > **Nota para quien navega**: Fortran es un lenguaje compilado, lo que quiere decir, que una vez escrito, antes de ser ejecutado por una máquina, debe ser compilado para producir un archivo que si que sea ejecutable por una máquina.
 
-### Configuración del compilador
+### 🟨 Configuración del compilador
 En este tutorial vamos a trabajar con [_GNU Fortran compiler (gfortran)_](https://gcc.gnu.org/fortran/), el cual es parte del conocido [_GNU Compiler Colection_(GCC)](https://gcc.gnu.org/), (~gcc para los amigos~).
 
 Para instalar `gfortran` en _Linux_, use su administrador de paquetes del Sistema. En _macOs_, puede instalar `gfortran` usando [_Homebrew_](https://brew.sh/) o bien [_MacPorts_](https://www.macports.org/). En _Windows_, usted puede descargar los archivos binarios [aquí](http://www.equation.com/servlet/equation.cmd?fa=fortran).
@@ -76,7 +76,7 @@ not even for MERCHANTABILITY
 or FITNESS FOR A PARTICULAR PURPOSE.
 ```
 
-### _Hola Mundo_
+### 🟨 _Hola Mundo_
 Una vez que haya configurado su compilador, abra un nuevo archivo en su editor de código favorito (~que debería ser Vim~) e ingrese el siguiente código (~vamos, píquelo por usted~):
 
 ```Fortran
@@ -105,7 +105,7 @@ y obtendrá (~junto a su creciente fascinación, vamos siga-me el rollo~)
 ```
 Felicitaciones, usted, ha escrito, compilado y ejecutado su primer programa en Fortran! En la siguiente parte de este (~apasionante~) tutorial le presentaremos variables (_variables_) para almacenar datos !
 
-## Variables 
+## 🟠 Variables 
 Las variables permiten guardar información que va a manipular o usar el programa. Fortran es un lenjuage de programación **fuertemente tipado**, lo que quiere decir, que dada cualquier variable esta debe tener un **tipo** (_type_).
 
 Hay 5 **tipos integrados** (_built-in data types_) en Fortran (para el que el lenguaje de programación proporciona soporte integrado.)
@@ -121,7 +121,7 @@ Antes de podar usar una variable, debe ser declarada; esto le dice al compilador
 > **Nota para quien navega**: Fortran es un **lenguaje de programación de tipo estático** (_statically typed_), lo que significa, que el tipo (_type_) de cada variable es fijo (no varia) una vez el programa es compilado. Es decir, mientras se ejecuta un programa en Fortran, una variable que se declare de un tipo (_type_), no podrá cambiarse a otro tipo  (_type_) durante el programa se este ejecutándose.
  
 
-### Declaración de variables
+### 🟧 Declaración de variables
 La sintaxis para declarar una variables es
 
 ```Fortran
@@ -173,7 +173,7 @@ Los valores lógicos o booleanos pueden tomar el valor `.true.` ó bien `.false.
 |------------------------------------------------------------------------|
 |Tenga cuidado la declaración y asignación `integer :: cantidad = 1`. **NO** es una inicialización normal para la variable, ya que implica el uso del atributo `save` lo que quiere decir que la variable retiene el valor entre procesos de llamada. Es una buena practica inicializar las variables de forma separada a la declaración de las mismas.|
 
-### Estándares de entradas/salidas (_input/output_)
+### 🟧  Estándares de entradas/salidas (_input/output_)
 
 En nuestro ejemplo anterior (`holamundo.f90`), imprimimos texto en la terminal. A esto se lo conoce comúnmente como `standard output` o bien `stdout`(salida estándar).
 
@@ -205,7 +205,7 @@ De forma similar, podemos leer valores en la ventana de comandos (o _shell_, o _
 ```
 
 Esta fuente de entrada (_input source_) comúnmente se suele referenciar como `standard input` o bien `stdin` (Entrada estándar).
-### Expresiones
+### 🟧 Expresiones
 
 En la siguiente tabla se muestra, por orden de precedencia, el conjunto de operadores aritméticos habituales disponibles en Fortran:
 
@@ -249,7 +249,7 @@ Veamos un ejemplo de su uso.
       end program aritmetica
 
 ```
-### Precisión de punto flotante (_floats_)
+### 🟧 Precisión de punto flotante (_floats_)
 
 La precisión de punto flotante (_floating-point precision_) deseada se puede declara de forma explicita usando el parámetro `kind`. El módulo intrínseco (_intrinsic module_) `iso_fortran_env` proporciona parámetros de tipo (_kind_) para los tipos comunes de 32 bits y 64 bits.
 
@@ -299,7 +299,7 @@ Podemos usar otro modulo,
 ```
 En la siguiente subsección, vamos a aprender como usar vectores para almacenar más de un valor en una variable.
 
-## Formaciones (_arrays_) y cadenas de caracteres (_strings_) 
+## 🔴 Formaciones (_arrays_) y cadenas de caracteres (_strings_) 
 
 Sucede más a menudo que lo contrario, que necesitamos almacenar y operar con largas listas de números, en lugar de unas únicas pocas variables escalares o caracteres (como las que hemos visto hasta ahora). En programación informática estas listas son llamadas _arrays_, que siguiendo el trabajo de _Antonio Ramón Vaquero Sánchez( 30 de  Agosto 1938)_ no traduciremos (~nunca más como arreglos~) sino como vectores  o formaciones (de escalares, por ejemplo).
 
@@ -309,7 +309,7 @@ Entendemos como formaciones (_arrays_), variables _multidimensionales_, es decir
 |------------------------------------------------------------------------|
 | Las formaciones o vectores  (_arrays_) están indexadas comenzando por `1`, esto quiere decir,  que para acceder al primer elemento de cualquiera de sus dimensiones, vamos a usar el indice igualado a `1`.|
 
-## Declaración de formaciones (_arrays_)
+### 🟥 Declaración de formaciones (_arrays_)
 
 Podemos declarar formaciones (_formaciones_) de cualquier tipo. Hay dos notaciones comunes para declarar formaciones de variables; usando la palabra clave `dimension` o agregando las dimensiones de la formación entre paréntesis después del nombre de la variable de formación separadas por `:`.
 
@@ -334,7 +334,7 @@ Veamos un ejemplo,
      end program formaciones
 ``` 
 
-## Rebanadas de formaciones (_Array slicing_)
+### 🟥 Rebanadas de formaciones (_Array slicing_)
 Una poderosa caracteristica del lenguaje de programación Fortran es su soporte integrado  para operaciones con formaciones (especialmente con matrices); podemos usar estas operaciones sobre una formación o una parte de una de esta (que también será una formación) usando la notación de formación rebanada:
 
 Veamos un ejemplo más,
@@ -387,7 +387,7 @@ Veamos un ejemplo más,
 
 > **Nota para quien navega**: Fortran guarda las formaciones de dos dimensiones por orden de columna; solo hace falta recordar que  el primer indice varia más rápidamente.
 
-### Asignación dinámica de formaciones (_dynamic arrays_)
+### 🟥 Asignación dinámica de formaciones (_dynamic arrays_)
 
 Hasta ahora hemos especificado el tamaño de nuestras formaciones en el código de nuestro programa; este tipo de formación (que podría ser un vector, matriz, ~tensor?~) _estática_, ya que su tamaño es fijo cuando compilamos nuestro programa. 
 
@@ -416,7 +416,7 @@ Para esta problemática, vamos a necesitar formaciones asignables `allocatable`,
 
 > **Nota para quien navega**: Las formaciones asignables locales se _desasignan_ automáticamente cuando quedan fuera de alcance (_when they go out of scope_). 
 
-### Cadenas de caracteres (_character strings_)
+### 🟥 Cadenas de caracteres (_character strings_)
 
 Vamos a verlo directamente con un par de ejemplos:
 
@@ -462,7 +462,7 @@ Ahora con cadenas de caracteres de tamaño asignable;
         print *, nombre//' '//apellido
       end program cadena_de_caracteres_asignable 
 ```
-## Operadores y estructuras de control (_control flow_)
+## 🟢 Operadores y estructuras de control (_control flow_)
 
 Una de las ventajas más poderosas de los algoritmos computables, en comparación con simplemente fórmulas matemática, se puede apreciar en la estructura ramificada que presenta estos primeros. Los programas que implementan los algoritmos pueden decidir, mediante estas ramificaciones, que instrucciones ejecutar seguidamente basándose en condiciones lógicas (Por ejemplo, si se cumple `a>5` , entonces has cinco veces _tal cosa_ ).
 
@@ -472,7 +472,7 @@ Hay dos maneras principales de controlar el flujo de instrucciones de un program
 
 * Bucle (_loop_): repite una porción de código múltiples veces.
 
-### Operadores lógicos
+### 🟩 Operadores lógicos
 
 Antes de usar un operador de bifurcación lógica o condicional, necesitamos ser capaces de formar una expresión lógica que comprobar si se cumple o no.
 
@@ -497,7 +497,7 @@ así como de el siguiente conjunto de operadores lógicos (_logical operators_):
 | `.eqv.`  | Verdadero (`TRUE`) si el operando izquierdo tiene el mismo valor lógico que el operando derecho.|
 | `.neqv`  | Verdadero (`TRUE`) si el operando izquierdo tiene el valor lógico opuesto al operando derecho.|
 
-### Construcciones condicionales (`if`)
+### 🟩 Construcciones condicionales (`if`)
 
 En los siguientes ejemplos, se utiliza un constructor condicional `if` para imprimir un mensaje que describe la naturaleza de la variable `angulo`.
 
@@ -556,7 +556,7 @@ Aunque eso no es todo, ya que podemos agregar el número de ramificaciones que q
       end program angulo_clasificar
 ```
 
-### Construcciones repetitivas o bucles (`do`)
+### 🟩 Construcciones repetitivas o bucles (`do`)
 
 En el siguiente ejemplo, vamos a usar la sentencia `do` para construir un bucle con el cual imprimir todos los elementos de una secuencia. El bucle creado con `do` tiene una variable entera que llamamos _contador_, esta es usada para contar en qué iteración `i`-ésima está el bucle actualmente (por ejemplo, si esta es la quita o sexta vez que se ejecuta la instrucción, eso es lo que cuenta la variable _contador_); en ejemplo vamos a usar un nombre común para la **variable contador**: `i` (_counter variable_).
 
@@ -605,7 +605,7 @@ Y obtenemos:
          10
 ```
 
-### Bucles condicionales (`do while`)
+### 🟩 Bucles condicionales (`do while`)
 
 Es posible agregar un condicional a un bucle con la sentencia o palabra clave `while`. Si usamos `while` el bucle se ejecutará mientras la condición dada dentro de `while()` sea cierta, es decir, tenga valor `.true.`.
 
@@ -624,7 +624,7 @@ Veamos todo esto de forma explícita en un ejemplo:
         print *,i ! Aquí _i_ vale 11
       end program bucle_condicional
 ```
-### Sentencias de control de bucle (`exit` y `cycle`)
+### 🟩 Sentencias de control de bucle (`exit` y `cycle`)
 
 La mayoría de veces, los bucles se deberían detener  si se cumple alguna condición. Fortran proporciona dos tipos de sentencias ejecutables para tal propósito.
 
@@ -663,7 +663,7 @@ Pero esto no es todo, si únicamente queremos saltar alguna de las iteraciones d
 
 > **Nota para quien navega**: Cuando usamos bucles anidados, la palabras claves `cycle` y `exit` o sentencias actuan **sobre el bucle más interno**.
 
-### Control de bucles anidados (_tags_ o etiquetas)
+### 🟩 Control de bucles anidados (_tags_ o etiquetas)
 
 Una duda recurrente en cualquier lenguaje de programación es hasta donde podemos usar bucles anidados ¿Dónde paramos? Cuando hablamos de **bucles anidados** nos referimos a bucles que existen dentro de bucles. Fortran permite a quien programa usar **etiquetas** o  **nombrar** (_tags_ o _names_) cada bucle. Si los bucles están etiquetados, se derivan de ello dos beneficios potenciales destacables:
 
@@ -693,7 +693,7 @@ Veamos un ejemplo de bucle con etiquetas;
       end program bucles_anidados_con_etiquetas
 ```
 
-### Bucles en paralelo (`do concurrent`)
+### 🟩 Bucles en paralelo (`do concurrent`)
 
 Los bucles `do concurrent` tienen una gran utilidad para especificar explícitamente que el interior del bucle no tiene interdependencias; esto resulta útil ya que informa al compilador de la posibilidad de usar paralelización/ _SIMD_ para ejecutar más rápido el bucle, así como dejar constancia de ello por parte de quien programa el código. Más especifícamente, esto significa que cualquier iteración del bucle no depende de la ejecucción previa decualquiera de las otras iteraciones del bucle `do concurrent`. También es necesario que cualquier cambio de estado (_state changes_)  que pudiera ocurrir, únicamente deba suceder dentro de la propia iteración dada sin afectar a las demás. Estos requisitos, ya de por si imponen el tipo de instrucciones que pueden ser colocadas dentro del cuerpo de un bucle `do concurrent`.
 
@@ -719,7 +719,7 @@ En fin demos un ejemplo pues;
 ```
 
 
-## Organizar la estructura del código
+## 🔵 Organizar la estructura del código
 
 La mayoría de lenguajes de programación le permiten recopilar código usado frecuentemente en procedimientos (_procedures_) que se puede reutilizar llamándolos (_calling_) desde otras secciones del código.
 
@@ -731,7 +731,7 @@ Fortran presenta dos maneras de hacer esto:
 Tanto las subrutinas como las funciones tienen acceso a las variables en el ámbito principal por asociación de argumentos (_argument association_); a menos que se especifique el atributo `VALUE`, esto es similar a llamar por referencia (_call by reference_).
 
  
-### Subrutinas
+### 🟦 Subrutinas
 Los argumentos de entrada de la subrutina, conocidos como argumentos ficticios (_dummy arguments_), se especifican entre paréntesis después del nombre de la subrutina; los tipos y atributos de argumentos ficticios se declaran dentro del cuerpo de la subrutina al igual que las variables locales.
 
 **Ejemplo (Subrutina para imprimir una matriz)**
@@ -771,7 +771,7 @@ Podemos llamar a la subrutina del ejemplo anterior usando la sentencia `call`.
 
 > **Nota para quien navega**: El anterior ejemplo hace uso de un argumento de matriz (un tipo de formación) de forma explicita (_so-called explicit-shape array_) ya que hemos pasado variables adicionales para describir las dimensiones de la formación de números reales de 2 dimensiones; esto no será necesario si colocamos nuestra subrutina dentro de un módulo, como describiremos más adelante.
 
-### Funciones
+### 🟦 Funciones
 
 **Ejemplo (Nuestra primera función en Fortran)**
 ```Fortran
@@ -807,7 +807,7 @@ Para ejecutar la anterior función podríamos usar el siguiente programa:
 |------------------------------------------------------------------------|
 | Es una buena práctica de programación el crear funciones que no modifiquen sus argumentos, es decir, todos los argumentos que reciban las funciones deberían ser de solo lectura (_read-only_, `intent(in)`), tales funciones se conocen como **funciones puras** (`pure` _functions_). Utilice subrutinas (_subroutines_) si su procedimiento necesita modificar argumentos.|
 
-### Módulos
+### 🟦 Módulos
 Los módulos de Fortran contienen definiciones accesibles a programas (_programs_), procedimientos (_procedures_) y otros módulos (_modules_) a través de la sentencia `use`. Pueden contener objetos de datos (_data objects_), definiciones de tipos (_type definitions_), procedimientos (_procedures_) y interfaces (_interfaces_).
 * Los módulos permiten la determinación del alcance de extensión por donde el _ente_ hace el acceso hace explicito.
 * Los módulos generan automáticamente las interfaces explícitas necesarias para los procedimientos modernos.
