@@ -869,3 +869,410 @@ Para usar un módulo en un programa podemos proceder tal como ilustra el siguien
 ```
 > **Nota para quien navega**: Cada módulo debe ser escrito en un archivo de código fuente terminado en `.f90` independiente. Los módulos deben compilarse antes que cualquier unidad de programa (_any program units_) los pueda `use`ar.
 
+## ⚫ Tipos derivados (_Derived types_)
+Tal como vimos en la segunda sección `## Variables`, en Fortran, hay cinco **tipos de datos integrados** (_built-in data_). En esencia, cuando nos referimos a tipos de datos derivados, o simplemente tipos derivados, nos referimos a una forma especial de datos que pueden encaplsular datos integrados o otros datos derivados a su vez. Podríamos considerar a estos tipos de datos como el equivalente generado por la instrucción `struct` en los lenguajes de programación `C` y `C++`.  
+
+### ⬛ Una ojeada a los tipos de datos derivados
+Comencemos por un ejemplo básico de tipo derivado
+
+**Ejemplo (Tipo de dato derivado)**
+```Fortran
+      type :: tipo_pareja
+         integer :: i
+         real :: x
+      end type
+```
+La sintaxis para crear una variable de tipo `tipo_pareja` y acceder a sus miembros es:
+
+**Ejemplo (Declarar y inicializar un tipo derivado)**
+```Fortran
+      !Declarar
+      type(tipo_pareja) :: pareja
+      
+      !Inicializar
+      pareja%i = 1
+      pareja%x = 0.5
+```
+> **Nota para quien navega**: El símbolo de porcentaje `%` es usado para acceder a cada uno de los miembros del tipo derivado.
+
+En el fragmento de código, declaramos y inicializamos un tipo derivado con miembros (del tipo derivado) dados de forma explicita. Aunque también podemos inicializar miembros de un tipo derivado invocando (_invoking_) al constructor del tipo derivado, sin especificar sus miembros.
+
+Veamos un ejemplo de uso de un constructor (_constructor_) para tipos derivados:
+
+**Ejemplo (Dos manera de inicializar con constructor)**
+```Fortran
+      ! Inicializar con argumentos posicionales
+      pareja = tipo_pareja(1,0.5)
+      
+      ! Inicializar con argumentos "de palabra clave"
+      pareja = tipo_pareja(i=1,x=0.5)
+
+      ! Inicializar con palabras clave permite cualquier orden
+      pareja = tipo_pareja(x=0.5,i=1)
+``` 
+
+**Ejemplo (Tipo derivado con inicialización por defecto)**
+```Fortran
+     program mi_primer_tipo_derivado
+        type :: tipo_pareja
+            integer :: i = 1
+            real    :: x = 0.5
+        end type
+        
+        type(tipo_pareja) :: pareja
+        
+        ! pareja%i es 1, pareja%x es 0.5
+        pareja = tipo_pareja() 
+        print *, '(i= ',pareja%i, 'x= ',pareja%x, ')'
+        
+        ! pareja%i es 2, pareja%x es 0.5
+        pareja = tipo_pareja(i=2)
+        print *, pareja
+
+        ! pareja%i es 1, pareja%x es 2.7
+        pareja = tipo_pareja(x=2.7)
+        print *, '(i= ',pareja%i, 'x= ',pareja%x, ')'
+      end program mi_primer_tipo_derivado
+
+!Salida del programa, observamos un valor curioso en el último valor
+! (i=            1 x=   0.500000000     )                                                                                                              
+!           2  0.500000000                                                                                                                             
+! (i=            1 x=    2.70000005     ) 
+```
+### ⬛ Tipos de datos derivados, en detalle 
+La sintaxis completa de un tipo derivado con todas las propiedades opcionales se presenta a continuación:
+
+**Ejemplo (Pseudocódigo en detalle de los tipos derivados)**
+```Fortran
+     type [,lista-de-atributos] :: nombre_del_tipo_derivado [lista-de-declaraciones-parametrizadas]
+          [sentencias-de-deficnición-parametrizadas]
+          [private declaraciones-privadas o sequence declaraciones-sequenciales]
+          [variables-o-miembros-del-tipo-derivado]
+          contains
+                [procedimientos-vinculados-al-type]
+    end type
+```
+
+### ⬛ Opciones para declarar un tipo derivado
+`lista-de-atributos` se refiere a lo siguiente:
+
+* El tipo de acceso al tipo (_access-type_) puede ser público (`public`) o privado (`private`).
+* `bind(c)` ofrece intolerabilidad con el lenguaje de programación **C**.
+* `extends(` "padre" `)` donde "padre" (_parent_) es el nombre de un tipo derivado previamente declarado, del cual, el tipo derivado actual heredará todos sus miembros y funcionalidad.
+* `abstract` una característica orientada a objetos que se cubre en el tutorial de programación avanzada.
+
+> **Nota para quien navega**: Si el atributo `attribute: bind(c)` o la sentencia `statement: sequence` son usadas en un tipo derivado no podremos usar los atributos `attribute: extends` y viceversa.
+
+El atributo `sequence` sólo puede ser usado para declarar que se debe acceder a los siguientes miembros (del tipo) en el mismo orden en que están definidos dentro del tipo derivado.
+
+**Ejemplo (Tipo derivado con sentencia `sequence`)**
+```Fortran
+      program usando_sequence
+        type :: tipo_pareja
+            sequence
+            integer :: i
+            real :: x
+        end type
+        
+        !Inicializamos 
+        type(tipo_pareja) :: pareja
+        pareja = tipo_pareja(1,0.5)
+        print *, pareja
+      end program usando_sequence
+```
+> **Nota para quien navega**: El uso de la sentencia `sequence` presupone que los tipos de datos definidos a continuación no son asignables (`allocatable`) ni de tipo puntero (`pointer`). Además, cabe destacar, que este tipo de datos **no implica**  que este tipos de datos se almacenen de una forma particular, no hay relación con el atributo `contiguous`.
+
+El uso de los atributos de tipos de acceso (_access-type_) `public` y `private` , si se usan, declaran que todas las _[variables-miembro]_ se les asignará automáticamente el atributo en consecuencia.
+
+El atributo `bind(c)` es usado para lograr la compatibilidad entre los tipos derivado de Fortran y las estructuras de _C_.
+
+Veamos un ejemplo con `bind(c)`
+
+**Ejemplo (Tipo derivado con sentencia `bind(c)`)**
+```Fortran
+     module fortran_a_c
+        use iso_c_bindings, only: c_int
+        implicit none
+        type, bind(c) :: tipo_fortran
+            integer(c_int) :: i
+        end type
+     end module fortran_a_c
+```
+ 
+,que coincide con la siguiente estructura en _C_ siguiente:
+
+**Ejemplo (Tipo derivado en sintaxis en lenguaje de programación C  )**
+```C
+struct{
+	int i
+}c_struct;
+```
+
+> **Nota para quien navega**: Un tipo derivado en Fortran con el atributo `bind(c)` no pueden tener los atributos `sequence` o `extends`. Además, **no** puede contener ningún puntero (`pointer`) o tipo asignable (`allocatable`) de Fortran.
+
+`lista-de-declaración-parametrizada`: es una característica opcional. Aunque, si se utiliza, los parámetros deben aparecer en lugar de `[sentencia-de-definición-parametrizada]` y deben ser o bien parámetros `len` o `kind`; o bien ambos.
+
+Vamos a ver un tipo derivado con `lista-declaración-parametrizada` y con el atributo `public`:
+
+**Ejemplo (Tipo derivado con sentencia `bind(c)`)**
+```Fortran
+      module m_matriz
+        implicit none
+        private
+
+        type, public :: tipo_matriz(filas, columnas, k)
+            integer, len :: filas, columnas
+            integer, kind :: k = kind(0.0)
+            real(kind=k), dimension(filas,columnas) :: valores
+        end type
+      end module m_matriz
+
+      program testear_matriz
+        use m_matriz
+        implicit none
+        type(tipo_matriz(filas=5,columnas=5)) :: m
+        print *,m      
+      end program testear_matriz
+```
+
+> **Nota para quien navega**: En este ejemplo, el parámetro `k` ya se le ha asignado un valor por defecto con `kind(0.0)`, es decir, de precisión simple de punto flotante. Por lo tanto, se puede omitir, como es el caso aquí en la declaración dentro del programa principal (que en este caso es `testear_matriz`).
+
+|**Importante:** |
+|------------------------------------------------------------------------|
+|De forma predeterminada, los tipos derivados y sus miembros son de acceso público (`public`). Sin embargo, en este ejemplo, el atributo `private` se usa al comienzo del módulo, por lo tanto, todo dentro del módulo será privado por defecto, a menos que, explícitamente, que se declare con `public` de forma especifica alguno. Si el tipo **matriz**  no se le dio el atributo público (`public`) en el ejemplo anterior, entonces el compilador arrojaría un error dentro del programa `testear_matriz`. |
+
+El atributo `extends` se agregó en el estándar _F2003_ e introduce una característica importante del paradigma de programación orientada a objetos (_OOP_, _object orientate paradigm_), **la herencia**. Permite la reutilización del código al permitir que los tipos derivados de los _hijos_ (_children_)  como este: ` type, extends(padre) :: hijo` recuperen todos los miembros y funcionalidades de un tipo derivado de los _padres_: `type :: padre`.
+
+Vamos a ver un ejemplo con el atributo `extends`:
+
+**Ejemplo (Tipo derivado con `extends`)**
+```Fortran
+      module modulo_empleados
+        implicit none 
+        private
+        public tipo_fecha, tipo_direccion, tipo_persona, tipo_empleado
+        ! Nota que así podemos declara todo un conjunto de datos 
+        ! como publicos 
+
+        !Tipo fecha 
+        type :: tipo_fecha 
+            integer                       :: anyo, mes, dia 
+        end type
+
+        !Tipo direccion
+        type :: tipo_direccion
+            character(len=:), allocatable :: ciudad, nombre_calle
+            integer                       :: numero_de_la_casa
+        end type
+
+        !Tipo hijo "persona" del padre "direccion"
+        type, extends(tipo_direccion) :: tipo_persona
+            character(len=:), allocatable :: nombre, apellido, e_mail
+        end type
+
+        !Tipo hijo "empleado" del padre "persona"
+        type, extends(tipo_persona) :: tipo_empleado
+            type(tipo_fecha)              :: fecha_contratacion
+            character(len=:), allocatable :: puesto_empresa
+            real                          :: salario_mensual
+        end type
+      end module modulo_empleados
+
+
+      program  testear_empleados
+        use modulo_empleados
+        implicit none 
+        type(tipo_empleado) :: empleado
+        
+        !Inicializamos 
+        empleado%fecha_contratacion%anyo =2021 
+        ! tipo_empleado tiene acceso a miembros del tipo_fecha 
+        ! no porque sea una extensión sino porque se declaro un
+        ! tipo_fecha dentro de tipo_empleado.
+        empleado%fecha_contratacion%mes = 5
+        empleado%fecha_contratacion%dia = 28
+        empleado%nombre= "Numerius"
+        ! tipo_empleado tiene acceso a miembros del tipo_persona
+        ! y por ello hereda sus miembros debido a "extends".
+        empleado%apellido = "Negidius"
+        empleado%ciudad = "Girona"
+        ! tipo_empleado tiene acceso a tipo_direccion ya que
+        ! porque hereda de tipo_persona que a su vez lo hereda
+        ! del tipo_direccion.
+        empleado%nombre_calle= 'Carrer Major'
+        empleado%numero_de_la_casa= 121
+        empleado%puesto_empresa= 'Interno'
+        empleado%salario_mensual= 0.0
+        print *, empleado%nombre 
+      end program testear_empleados
+
+``` 
+
+###  ⬛ Opciones para declarar miembros de un tipo derivado (_members of a derived type_)
+
+`[variables-miembro]` se refiere a la declaración de todos los miembros de un tipo de dato. Estos tipos de datos pueden ser de cualquier tipo de datos integrado y/o de otros tipos derivados, como ya hemos visto en los ejemplos anteriores. Sin embargo, las variables miembro pueden tener su propia sintaxis extensa, en forma de: `type [, atributos-miembro] :: nombre[especificación-dependiente-del-atributo][init]`.
+
+`type:` calquier tipo integrado (_bullit-in type_).
+
+`variables-miembro` (opcionales):
+* Atributos de acceso `public` o `private`.
+* `protected` que también es un atributo de acceso.
+* `allocatable` con o sin `dimension` para especificar una formación dinámica (_dynamic array_)
+* puntero (`pointer`), codimensión (`codimension`), contiguo (`contiguous`),  volátil (`volatile`), asincrónico (`asynchronous`).
+
+Veamos un ejemplo de casos comunes:
+
+**Ejemplo (Tipo derivado con `extends`)**:
+```Fortran
+      module usando_protected_y_mas
+        type :: tipo_ejemplo
+
+            !1r_caso: tipo integrado simple con atributo 
+            !de acceso e [init]
+            integer, private :: i = 0 
+            !"private" lo oculta del uso fuera del alcance
+            ! de tipo_ejemplo
+            ! La inicialización predeterminada "[=0]" es la
+            ! parte "[init]".
+         
+
+            !2n_caso: "protected"
+           !!integer, protected :: i
+            ! A diferencia de "private", "protected" permite 
+            ! el acceso al valor asignado de "i" fuera de
+            ! tipo_ejemplo pero no es definible, es decir,
+            ! se puede asignar un valor a "i" solo dentro de 
+            ! tipo_ejemplo
+
+
+            !3r_caso id de una formación dinámica 
+            real, allocatable, dimension(:) :: x
+            ! lo mismo con
+           !!real, allocatable :: x(:)
+            ! El paréntesis implica "dimension(:)" y es uno de los 
+            ! posibles "[especificaciones-dependientes del atributo]"
+        end type
+      end module usando_protected_y_mas
+     
+      program testear_usando_protected_y_mas
+        use usando_protected_y_mas
+        type(tipo_ejemplo) :: ejemplo1
+        print *, 'x=' , ejemplo1%x
+        !print *, 'i=' , ejemplo1%i
+      end program testear_usando_protected_y_mas            
+```
+
+> **Nota para quien navega**: Los siguientes atributos: puntero (`pointer`), codimensión (`codimension`), contiguo (`contguous`), volátil (`volatile`), asíncrono (`asynchronous`) son funciones avanzadas que no se abordarán en el tutorial de inicio rápido. Sin embargo, se comenta de su existencia aquí para que quien lo lea  sepan que estas características existen y puedan reconocerlas. Estas características se tratarán en detalle en el próximo _mini-libro_ de programación avanzada.
+
+
+### ⬛ Procedimientos ligados al tipado de datos (_Type-bound procedures_)
+Un tipo derivado puede contener funciones o subrutinas vinculadas a él. Nos referiremos a ellos como procedimientos ligados a tipos (_type-bound procedures_). Los procedimientos de tipado  siguen la sentencia `contains`  que, a su vez, sigue todas las declaraciones de variables miembro.
+
+> **Nota para quien navega**: Es imposible describir en su totalidadlos _type-bound procedures_ sin profundizar en las características dinherentes ligadas a la programación orientada a objetos (_OOP_) del Fortran moderno. Por el momento nos vamos a limitar a un ejemplo sencillo para mostrar su uso de forma básica.
+
+A continuación un ejemplo de un procedimiento ligado al tipo (_type-bound procedure_):
+
+**Ejemplo (Tipo derivado con `procedure` y `contains`; con función)**
+```Fortran
+      module modulo_formas
+        implicit none 
+        private
+        public tipo_cuadrado
+
+        
+        type :: tipo_cuadrado
+            real :: lado
+            contains 
+                procedure :: area !Declaración de procedimiento
+        end type
+
+
+        contains
+        !Definición del procedimiento
+        real function area(el_mismo) result(resultado)
+            class(tipo_cuadrado), intent(in) :: el_mismo
+            resultado=el_mismo%lado**2
+        end function
+      end module modulo_formas
+
+
+      program principal ! "principal" .eq. "main"
+        use modulo_formas
+        implicit none
+        
+        !Declaración de variables
+        type(tipo_cuadrado) :: cuadradito
+        real :: x, lado
+
+        !Inicializando variables
+        lado = 0.5
+        cuadradito%lado = lado
+        x =cuadradito%area()
+        ! el "el_mismo" no aparece aquí, esto sucede ya que es 
+        ! pasado de forma implícita 
+        print *, "x=" , x
+      end program principal
+
+      !x=  0.250000000 
+
+```
+¿Y qué es nuevo?
+
+* `el_mismo` es un nombre arbitrario que elegimos para representar la instancia del tipo derivado `tipo_cuadrado` dentro de la función con `procedure`. Esto nos permite acceder a sus miembros y pasarlos automáticamente como argumentos cuando invocamos un procedimiento de tipo enlazado (_type-bound procedure_).
+
+* Ahora usamos la `class(tipo_cuadrado)` en la interfaz (_interface_) de la función `area()`. Esto nos permite invocar o llamar a la función `area()` con cualquier tipo derivado que extienda  `tipo_cuadrado`. La palabra clave (_keyword_) `class` intoduce las características de POO (Paradigma/ Programación Orientada a Objetos, o _Object-oriented programming_), como los polimorfismos.
+
+En el ejemplo anterior, el tipo de procedimiento (_type-bound procedure_) `area` enlazado a tipo se define como una función y solo puedeinvocar en una expresión, por ejemplo `x =cuadradito%area()` o bien `print *, cuadradito%area()`. Si definimos en vez de una función como una subrutina, entonces, puede invocar a `area` mediante la sentencia `call`.
+
+Veamos esto:
+**Ejemplo (Tipo derivado con `procedure` y `contains`; con subrutina)**
+```Fortran
+      module modulo_formas
+        implicit none 
+        private
+        public tipo_cuadrado
+
+        
+        type :: tipo_cuadrado
+            real :: lado
+            contains 
+                procedure :: area !Declaración de procedimiento
+        end type
+
+       !!Aquí añadimos nuestra modificación 
+        contains
+            subroutine area(el_mismo,x)
+            class(tipo_cuadrado), intent(in) :: el_mismo
+            real,                 intent(out) :: x
+            x=el_mismo%lado**2
+            end subroutine
+      end module modulo_formas
+
+
+      program principal ! "principal" .eq. "main"
+        use modulo_formas
+        implicit none
+        
+        !Declaración de variables
+        type(tipo_cuadrado) :: cuadradito
+        real :: x, lado
+
+        !Inicializando variables
+        lado = 0.5
+        cuadradito%lado = lado
+        call cuadradito%area(x)
+        ! el "el_mismo" no aparece aquí, esto sucede ya que es 
+        ! pasado de forma implícita 
+        print *, "x=" , x
+      end program principal
+
+      !x=  0.250000000 
+```
+
+En contraste con el ejemplo que usaba el formato función (`function`) ahora con la implementación mediante una subrutina tenemos dos argumentos:
+
+* `class(tipo_cuadrado), intent(in) :: el_mismo`, que es la instancia del tipo derivado en sí.
+
+* `real, intent(out) :: x` , que se utiliza para almacenar el área calculada y volver su valor al hacer la llamada.
+
+
