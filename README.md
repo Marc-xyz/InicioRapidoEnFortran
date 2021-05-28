@@ -29,6 +29,16 @@ es agradable hacerlo.
 	- Sentencias de control de bucle (`exit` y `cycle`)
 	- Control de bucles anidados (_tags_ o etiquetas)
 	- Bucles en paralelo (`do concurrent`)
+* Organizar la estructura del código
+	- Subrutinas
+	- Funciones
+	- Módulos
+* Tipos derivados (_Derived types_)
+	- Una ojeada a los tipos de datos derivados
+	- Tipos de datos derivados, en detalle 
+	- Opciones para declarar un tipo derivado
+	- Opciones para declarar miembros de un tipo derivado (_members of a derived type_)
+	- Procedimientos ligados al tipado de datos (_Type-bound procedures_)
 ## Introducción
 El siguiente tutorial de inicio rápido ofrece una descripción general del lenguaje de programación Fortran, así de como su sintaxis para estructuras de programación típicas como: tipos (_types_), variables (_variables_), arreglos (~este termino es poco adecuado~) o vectores (_arrays_), flujo de control (_control flow_) y funciones (_functions_).
 
@@ -707,3 +717,155 @@ En fin demos un ejemplo pues;
         print *, resultado_sin
       end program bucle_simultaneo
 ```
+
+
+## Organizar la estructura del código
+
+La mayoría de lenguajes de programación le permiten recopilar código usado frecuentemente en procedimientos (_procedures_) que se puede reutilizar llamándolos (_calling_) desde otras secciones del código.
+
+Fortran presenta dos maneras de hacer esto:
+
+* **Subrutinas**: invocadas mediante la sentencia `call`.
+* **Funciones**: invocadas dentro de una expresión o asignación a la que devuelve un valor.
+
+Tanto las subrutinas como las funciones tienen acceso a las variables en el ámbito principal por asociación de argumentos (_argument association_); a menos que se especifique el atributo `VALUE`, esto es similar a llamar por referencia (_call by reference_).
+
+ 
+### Subrutinas
+Los argumentos de entrada de la subrutina, conocidos como argumentos ficticios (_dummy arguments_), se especifican entre paréntesis después del nombre de la subrutina; los tipos y atributos de argumentos ficticios se declaran dentro del cuerpo de la subrutina al igual que las variables locales.
+
+**Ejemplo (Subrutina para imprimir una matriz)**
+```Fortran
+     ! Subrutina usada en el programa principal líneas de la 11 a la 22
+      subroutine subrutina_imprimir_matriz(numero_filas,numero_columnas,matriz)
+        implicit none 
+        integer, intent(in) :: numero_filas
+        integer, intent(in) :: numero_columnas
+        real, intent(in) :: matriz(numero_filas,numero_columnas)
+
+        integer :: i
+        do i=1,numero_filas
+            print *,matriz(i,1:numero_columnas)
+        end do
+      end subroutine subrutina_imprimir_matriz  
+```
+
+Nótese que la sentencia adicional en `intent` cuando declaramos las variables ficticias (_dummy arguments_); esta sentencia o atributo opcional es interpretado por el compilador para explicitar cuando el argumento es: de **solo lectura** (_ready-only_,`intent(in)`), de **solo escritura** (_write-only_, `intent(out)`), o de **lectura y escritura** (_read-write_,`intent(inout)`); dentro de la subrutina. En este ejemplo, la subrutina no modifica sus argumentos, por tanto, todos los argumentos son de _ready-only_, y usamos `(in)` dento de la sentencia `intent`.
+|**Consejo:** |
+|------------------------------------------------------------------------|
+| Es una buena práctica especificar siempre el atributo `intent` para los argumentos ficticios (_dummy argumentos_); esto permite al compilador comprobar si hay errores sintácticos en el código y proporciona una auto-documentación (_self-documentation_).|
+
+Podemos llamar a la subrutina del ejemplo anterior usando la sentencia `call`.
+
+**Ejemplo (Llamando una subrutina con `call`)**
+```Fortran
+     !Programa principal líneas de la 1 a la 8
+      program llamar_subrutina
+        implicit none 
+        real :: matriz(10,20)
+        !Inicializar en cero todos los valores
+        matriz(:,:) = 0.0
+        call subrutina_imprimir_matriz(10,20,matriz)
+      end program llamar_subrutina
+```
+
+> **Nota para quien navega**: El anterior ejemplo hace uso de un argumento de matriz (un tipo de formación) de forma explicita (_so-called explicit-shape array_) ya que hemos pasado variables adicionales para describir las dimensiones de la formación de números reales de 2 dimensiones; esto no será necesario si colocamos nuestra subrutina dentro de un módulo, como describiremos más adelante.
+
+### Funciones
+
+**Ejemplo (Nuestra primera función en Fortran)**
+```Fortran
+      !Función usada en el programa principal de las líneas 11 a 18       
+      function norma_del_vector(longitud_del_vector,nombre_del_vector) result(valor_norma)
+        implicit none
+        integer, intent(in) :: longitud_del_vector
+        real, intent(in) :: nombre_del_vector(longitud_del_vector)
+        real :: valor_norma
+        valor_norma= sqrt(sum(nombre_del_vector**2))
+      end function norma_del_vector
+```
+|**Consejo:** |
+|------------------------------------------------------------------------|
+|En la creación de código en Fortran la función de norma de un vector ya esta implementada de la mejor forma mediante `norm2`, por tanto no hará falta reescribirla en futuros códigos. ( ~No se desanime no ha perdido el tiempo, usted ha aprendido y además ahora conoce un atajo para su trabajo~ ).| 
+
+Para ejecutar la anterior función podríamos usar el siguiente programa:
+
+**Ejemplo (Llamando a una función)**
+```Fortran
+!Programa principal líneas de la 1 a la 9
+      program llamar_funcion
+        implicit none 
+        real :: un_vector(9)
+        real :: norma_del_vector
+        !Inicializar en 9 todas las componentes del vector
+        un_vector(:)=9
+        print *, 'Norma del vector= ',norma_del_vector(9,un_vector)
+      end program llamar_funcion
+```
+
+|**Consejo:** |
+|------------------------------------------------------------------------|
+| Es una buena práctica de programación el crear funciones que no modifiquen sus argumentos, es decir, todos los argumentos que reciban las funciones deberían ser de solo lectura (_read-only_, `intent(in)`), tales funciones se conocen como **funciones puras** (`pure` _functions_). Utilice subrutinas (_subroutines_) si su procedimiento necesita modificar argumentos.|
+
+### Módulos
+Los módulos de Fortran contienen definiciones accesibles a programas (_programs_), procedimientos (_procedures_) y otros módulos (_modules_) a través de la sentencia `use`. Pueden contener objetos de datos (_data objects_), definiciones de tipos (_type definitions_), procedimientos (_procedures_) y interfaces (_interfaces_).
+* Los módulos permiten la determinación del alcance de extensión por donde el _ente_ hace el acceso hace explicito.
+* Los módulos generan automáticamente las interfaces explícitas necesarias para los procedimientos modernos.
+
+|**Consejo:** |
+|------------------------------------------------------------------------|
+|Se recomienda colocar siempre funciones y subrutinas dentro de los módulos.|
+
+Vamos un ejemplo de módulo en Fortran:
+
+**Ejemplo (Nuestra primer módulo en Fortran)**
+```Fortran
+       module mi_primer_modulo
+        implicit none 
+        
+        !private variable_privada !Todas las entradas son module-private por defecto
+        public variable_publica, imprimir_matriz_A !Explicitamos exportar las entradas como públicas
+
+        real, parameter :: variable_publica=2
+        integer :: variable_privada
+
+        contains
+            !Imprimir la matriz A por pantalla
+            subroutine imprimir_matriz_A(A)
+                real, intent(in) :: A(:,:) ! Un argumento ficticio 
+                
+                integer :: i
+                do i=1,size(A,1)
+                    print *,A(i,:)
+                end do
+            end subroutine imprimir_matriz_A
+      end module mi_primer_modulo 
+```
+
+> **Nota para quien navega**: Si comparamos esta subrutina (la que esta incluida dentro del modulo justo en el ejemplo anterior) para imprimir matrices, con la función de subapartado anterior que hacia a la práctica lo mismo (imprimir una matriz dada por pantalla ), vemos que ya no necesitamos pasar las dimensiones de la matriz (formación de dos dimensiones) y en su lugar podemos aprovechar que estos argumentos se están asumiendo (_assumed-shape arguments_), esto sucede ya que el módulo generará una interfaz explicita (_explicit iterface_). Esto da como resultado una interfaz de subrutina mucho más simple.
+
+Para usar un módulo en un programa podemos proceder tal como ilustra el siguiente ejemplo:
+
+**Ejemplo (Llamando a un módulo con `use`)**
+```Fortran
+      program llamar_modulo
+        use mi_primer_modulo
+        implicit none 
+
+        real :: matriz(10,10)
+        matriz(:,:)=variable_publica
+        call imprimir_matriz_A(matriz)
+      end program llamar_modulo
+```
+
+**Ejemplo (Importar lista explicita)**
+```Fortran
+      use mi_primer_modulo, only: variable_publica
+```
+
+**Ejemplo (Importar con un mote o alias)**
+```Fortran
+    use mi_primer_modulo, only: imprimirMatriz=>imprimir_matriz_A
+```
+> **Nota para quien navega**: Cada módulo debe ser escrito en un archivo de código fuente terminado en `.f90` independiente. Los módulos deben compilarse antes que cualquier unidad de programa (_any program units_) los pueda `use`ar.
+
